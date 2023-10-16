@@ -21,7 +21,7 @@ export default class App extends Component<{}, RequestState>{
 
   setResponse = (url: string) => {
     axios.get(url).then((response) => {
-      this.setState({ output: response.data["fact"]});
+      this.setState({ output: JSON.stringify(response.data)});
     });
   }
 
