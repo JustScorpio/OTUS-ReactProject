@@ -8,10 +8,38 @@ import {
   Link,
   Routes
 } from 'react-router-dom';
+import { createStore, configureStore } from '@reduxjs/toolkit';
+import Provider from 'react-redux';
 
 interface RequestState { url: string, output: string };
 
 const RequestContext = createContext({ url: "", output: "" });
+
+type Action = { type: string, payload?: any };
+
+const counter = (state = 0, action: Action) => {
+  console.log(state);
+  switch (action.type) {
+    case 'add_click':
+      return state + 1
+    case 'delete_click':
+      return state <= 0 ? 0 : state - 1
+    default:
+      return state
+  }
+}
+
+const store = configureStore({ reducer: { count: counter } });
+
+function render() {
+  if (document != null) {
+    var valueEl = document.getElementById('value');
+    if (valueEl != null)
+      valueEl.innerHTML = store.getState().count.toString()
+  }
+}
+
+store.subscribe(render)
 
 export default class App extends Component<{}, RequestState>{
 
@@ -46,7 +74,7 @@ export default class App extends Component<{}, RequestState>{
               <Link to={'/Login'}>Login</Link>
             </li>
             <li>
-              <Link to={'/randomtext'}>This page is not exists</Link>
+              <Link to={'/Clicker'}>Redux-based clicker</Link>
             </li>
             <li>
               <Link to={'/whatareyoulookingfor'}>This page is not exists too</Link>
@@ -61,9 +89,16 @@ export default class App extends Component<{}, RequestState>{
               <OutputText />
             </RequestContext.Provider>
           } />
-          <Route path="Login" element={<div>Hey! Login!</div>}/>
-          <Route path="Register" element={<div>Hey! Register!</div>}/>
-          <Route path="*" element={<div>404</div>}/>
+          <Route path="Login" element={<div>Hey! Login!</div>} />
+          <Route path="Register" element={<div>Hey! Register!</div>} />
+          <Route path="Clicker" element={
+            <p>
+              Clicked: <span id="value">0</span> times
+              <button id="increment" onClick={function () { store.dispatch({ type: 'add_click' }) }}>+</button>
+              <button id="decrement" onClick={function () { store.dispatch({ type: 'delete_click' }) }}>-</button>
+            </p>
+          } />
+          <Route path="*" element={<div>404</div>} />
         </Routes>
       </BrowserRouter>
     </>;
