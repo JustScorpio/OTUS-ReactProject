@@ -10,6 +10,8 @@ import {
 } from 'react-router-dom';
 import { createStore, configureStore } from '@reduxjs/toolkit';
 import Provider from 'react-redux';
+import {Button, Container, Navbar } from 'react-bootstrap';
+import './style/bootstrap.min.css';
 
 interface RequestState { url: string, output: string };
 
@@ -62,30 +64,30 @@ export default class App extends Component<{}, RequestState>{
   render(): ReactNode {
     return <>
       <BrowserRouter>
-        <nav>
-          <ul>
-            <li>
+        <Navbar>
+          <Container>
+            <Navbar.Brand>
               <Link to={'/'}>Home</Link>
-            </li>
-            <li>
+            </Navbar.Brand>
+            <Navbar.Brand>
               <Link to={'/Register'}>Register</Link>
-            </li>
-            <li>
+            </Navbar.Brand>
+            <Navbar.Brand>
               <Link to={'/Login'}>Login</Link>
-            </li>
-            <li>
+            </Navbar.Brand>
+            <Navbar.Brand>
               <Link to={'/Clicker'}>Redux-based clicker</Link>
-            </li>
-            <li>
+            </Navbar.Brand>
+            <Navbar.Brand>
               <Link to={'/whatareyoulookingfor'}>This page is not exists too</Link>
-            </li>
-          </ul>
-        </nav>
+            </Navbar.Brand>
+          </Container>
+        </Navbar>
         <Routes>
           <Route index element={
             <RequestContext.Provider value={this.state}>
               <InputUrl handler={this.setUrl} />
-              <Button handler={this.setResponse} />
+              <SendButton handler={this.setResponse} />
               <OutputText />
             </RequestContext.Provider>
           } />
@@ -116,7 +118,7 @@ class InputUrl extends Component<{ handler: { (urlToCall: string): void } }, Req
 //Компонент-кнопка (функция)
 interface InputUrlProps { handler: { (urlToCall: string): void } }
 
-function Button(props: InputUrlProps) {
+function SendButton(props: InputUrlProps) {
   return <RequestContext.Consumer>
     {context =>
       <button onClick={() => props.handler(context.url)}>
