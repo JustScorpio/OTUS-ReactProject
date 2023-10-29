@@ -94,16 +94,29 @@ export default class App extends Component<{}, RequestState>{
           <Route path="Login" element={<div>Hey! Login!</div>} />
           <Route path="Register" element={<div>Hey! Register!</div>} />
           <Route path="Clicker" element={
-            <p>
-              Clicked: <span id="value">0</span> times
-              <button id="increment" onClick={function () { store.dispatch({ type: 'add_click' }) }}>+</button>
-              <button id="decrement" onClick={function () { store.dispatch({ type: 'delete_click' }) }}>-</button>
-            </p>
+            <Clicker/>
           } />
           <Route path="*" element={<div>404</div>} />
         </Routes>
       </BrowserRouter>
     </>;
+  }
+}
+
+//Компонент-строка ввода (класс)
+class Clicker extends Component<{}, RequestState>{
+
+  //Иначе при возврате на ссылку до нажатия на кнопку отображается начальное значение
+  componentDidMount(){ 
+    render(); 
+  } 
+
+  render(): ReactNode {
+    return <div>
+    Clicked: <span id="value">0</span> times
+    <button id="increment" onClick={function () { store.dispatch({ type: 'add_click' }) }}>+</button>
+    <button id="decrement" onClick={function () { store.dispatch({ type: 'delete_click' }) }}>-</button>
+  </div>
   }
 }
 
