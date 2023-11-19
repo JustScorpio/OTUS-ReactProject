@@ -9,7 +9,7 @@ import {
   Routes
 } from 'react-router-dom';
 import { createStore, configureStore } from '@reduxjs/toolkit';
-import Provider from 'react-redux';
+import {Provider, useDispatch, useSelector, connect} from 'react-redux'
 import {Button, Container, Navbar } from 'react-bootstrap';
 import './style/bootstrap.min.css';
 
@@ -63,6 +63,7 @@ export default class App extends Component<{}, RequestState>{
 
   render(): ReactNode {
     return <>
+    <Provider store={store}>
       <BrowserRouter>
         <Navbar>
           <Container>
@@ -99,6 +100,7 @@ export default class App extends Component<{}, RequestState>{
           <Route path="*" element={<div>404</div>} />
         </Routes>
       </BrowserRouter>
+      </Provider>
     </>;
   }
 }
@@ -109,7 +111,7 @@ class Clicker extends Component<{}, RequestState>{
   //Иначе при возврате на ссылку до нажатия на кнопку отображается начальное значение
   componentDidMount(){ 
     render(); 
-  } 
+  }
 
   render(): ReactNode {
     return <div>
