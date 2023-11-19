@@ -33,16 +33,6 @@ const counter = (state = 0, action: Action) => {
 
 const store = configureStore({ reducer: { count: counter } });
 
-function render() {
-  if (document != null) {
-    var valueEl = document.getElementById('value');
-    if (valueEl != null)
-      valueEl.innerHTML = store.getState().count.toString()
-  }
-}
-
-store.subscribe(render)
-
 export default class App extends Component<{}, RequestState>{
 
   constructor(props: {}) {
@@ -106,20 +96,15 @@ export default class App extends Component<{}, RequestState>{
 }
 
 //Компонент-строка ввода (класс)
-class Clicker extends Component<{}, RequestState>{
+function Clicker(){
 
-  //Иначе при возврате на ссылку до нажатия на кнопку отображается начальное значение
-  componentDidMount(){ 
-    render(); 
-  }
+  const clicksCount = useSelector((globalStore: {count: number}) => globalStore.count);
 
-  render(): ReactNode {
-    return <div>
-    Clicked: <span id="value">0</span> times
+  return <div>
+    Clicked: <span id="value">{clicksCount}</span> times
     <button id="increment" onClick={function () { store.dispatch({ type: 'add_click' }) }}>+</button>
     <button id="decrement" onClick={function () { store.dispatch({ type: 'delete_click' }) }}>-</button>
   </div>
-  }
 }
 
 //Компонент-строка ввода (класс)
